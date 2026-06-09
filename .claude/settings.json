@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /mnt/c/ 2>/dev/null | head -20; ls /mnt/d/ 2>/dev/null | head -20)",
+      "Read(//mnt/**)",
+      "Read(//c//**)",
+      "PowerShell(& \"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root -e \"CREATE DATABASE IF NOT EXISTS furniture_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; SHOW DATABASES;\" 2>&1)",
+      "PowerShell(Rename-Item \"d:\\\\Furniture\\\\database\\\\migrations\\\\2026_05_22_104538_create_product_images_table.php\" \"2026_05_22_104539_create_product_images_table.php\")",
+      "PowerShell(& \"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root -e \"DROP DATABASE furniture_store; CREATE DATABASE furniture_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" 2>&1)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://127.0.0.1:8000\" -UseBasicParsing -TimeoutSec 10 2>&1)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://127.0.0.1:8000\" -UseBasicParsing -TimeoutSec 10)",
+      "PowerShell(Start-Sleep -Seconds 2; try { $r = Invoke-WebRequest -Uri \"http://127.0.0.1:8000\" -UseBasicParsing -TimeoutSec 8; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $_\" })",
+      "Bash(Get-ChildItem -Path \"d:\\\\Furniture-main\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)"
+    ]
+  }
+}
