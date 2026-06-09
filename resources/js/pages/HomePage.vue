@@ -1,335 +1,248 @@
 <template>
-    <div>
-        <!-- Hero Section -->
-        <section class="relative min-h-screen flex items-center overflow-hidden" style="background:linear-gradient(135deg,#1E1B18 0%,#2D2420 40%,#3D2B1F 100%)">
-            <!-- Decorative background -->
-            <div class="absolute inset-0">
-                <div class="absolute inset-0 opacity-20"
-                    style="background-image:url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80'); background-size:cover; background-position:center"></div>
-                <div class="absolute inset-0" style="background:linear-gradient(135deg,rgba(30,27,24,0.9) 0%,rgba(75,46,30,0.7) 100%)"></div>
+    <div class="home-page">
+
+        <!-- ══════════════ HERO ══════════════ -->
+        <section class="hero" style="margin-top:-66px">
+            <!-- Background -->
+            <div class="hero-bg">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=85&auto=format&fit=crop"
+                    alt="Luxury sofa" class="hero-bg-img" loading="eager">
+                <div class="hero-overlay"></div>
             </div>
 
-            <!-- Floating decorative blobs -->
-            <div class="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 animate-float"
-                style="background:radial-gradient(circle, #C9A66B, transparent); filter:blur(60px)"></div>
-            <div class="absolute bottom-20 left-1/3 w-64 h-64 rounded-full opacity-10"
-                style="background:radial-gradient(circle, #8B5E3C, transparent); filter:blur(40px); animation:float 4s ease-in-out infinite reverse"></div>
-
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <!-- Left: Text -->
-                    <div class="animate-fade-in">
-                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                            style="background:rgba(201,166,107,0.15); border:1px solid rgba(201,166,107,0.3)">
-                            <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#C9A66B"></span>
-                            <span class="text-xs font-semibold uppercase tracking-widest" style="color:#C9A66B">Premium Collection 2026</span>
-                        </div>
-                        <h1 class="font-heading font-bold mb-6 leading-tight text-white"
-                            style="font-size:clamp(38px,6vw,72px); line-height:1.1">
-                            Elegant Furniture<br>
-                            <span style="background:linear-gradient(135deg,#C9A66B,#F5EFE6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent">for Modern Living</span>
-                        </h1>
-                        <p class="text-base leading-relaxed mb-8 max-w-lg" style="color:rgba(245,239,230,0.75)">
-                            Discover premium sofas, beds, dining tables, chairs, storage solutions, and home decor crafted for comfort and style.
-                        </p>
-
-                        <div class="flex flex-wrap gap-4 mb-10">
-                            <RouterLink to="/shop" class="btn-primary text-sm py-3.5 px-8">
-                                Shop Furniture
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                            </RouterLink>
-                            <RouterLink to="/shop" class="btn-outline text-sm py-3.5 px-8"
-                                style="color:#C9A66B; border-color:rgba(201,166,107,0.5)">
-                                Explore Collections
-                            </RouterLink>
-                        </div>
-
-                        <!-- Trust badges -->
-                        <div class="flex flex-wrap gap-4">
-                            <div v-for="badge in trustBadges" :key="badge"
-                                class="flex items-center gap-2 text-xs font-medium" style="color:rgba(245,239,230,0.6)">
-                                <span style="color:#C9A66B">✓</span> {{ badge }}
-                            </div>
-                        </div>
+            <!-- Content -->
+            <div class="hero-content">
+                <div class="max-w-[640px]">
+                    <div class="hero-eyebrow">
+                        <span class="hero-eyebrow-dot"></span>
+                        Handcrafted in Bangladesh
+                    </div>
+                    <h1 class="hero-title">
+                        Where Homes
+                        <span class="hero-title-accent">Come Alive</span>
+                    </h1>
+                    <p class="hero-sub">
+                        Discover premium furniture crafted for modern living.
+                        Timeless designs, exceptional quality.
+                    </p>
+                    <div class="hero-actions">
+                        <RouterLink to="/shop" class="btn-primary" style="padding:15px 36px; font-size:15px">
+                            Shop Collection
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </RouterLink>
+                        <RouterLink to="/about" class="hero-ghost-btn">
+                            Our Story
+                        </RouterLink>
                     </div>
 
-                    <!-- Right: Floating product cards -->
-                    <div class="relative hidden lg:flex items-center justify-center h-[500px]">
-                        <div class="absolute inset-0 rounded-3xl opacity-5" style="background:rgba(201,166,107,0.3); border:1px solid rgba(201,166,107,0.2)"></div>
-
-                        <!-- Main product card -->
-                        <div class="relative z-10 w-72 card-premium animate-float">
-                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop&q=80"
-                                class="w-full h-48 object-cover rounded-t-2xl">
-                            <div class="p-4">
-                                <span class="text-xs font-semibold uppercase tracking-wider" style="color:#C9A66B">Living Room</span>
-                                <h3 class="font-heading font-semibold mt-1 mb-1" style="color:#1E1B18">Modern Luxury Sofa</h3>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <span class="price-tag text-lg">৳38,000</span>
-                                        <span class="price-original text-sm ml-2">৳45,000</span>
-                                    </div>
-                                    <span class="badge-discount">-16%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Floating stat cards -->
-                        <div class="absolute top-8 right-4 glass rounded-xl p-3 text-center" style="animation:float 2.5s ease-in-out infinite">
-                            <p class="font-heading font-bold text-xl" style="color:#C9A66B">500+</p>
-                            <p class="text-xs" style="color:#6D655F">Products</p>
-                        </div>
-                        <div class="absolute bottom-8 left-4 glass rounded-xl p-3 text-center" style="animation:float 3.5s ease-in-out infinite reverse">
-                            <p class="font-heading font-bold text-xl" style="color:#8B5E3C">2K+</p>
-                            <p class="text-xs" style="color:#6D655F">Happy Customers</p>
-                        </div>
-                        <div class="absolute top-1/3 right-0 glass rounded-xl p-3 text-center" style="animation:float 4s ease-in-out infinite">
-                            <p class="font-heading font-bold text-xl" style="color:#6B7A52">⭐ 4.9</p>
-                            <p class="text-xs" style="color:#6D655F">Rating</p>
+                    <!-- Stats row -->
+                    <div class="hero-stats">
+                        <div v-for="s in heroStats" :key="s.label" class="hero-stat">
+                            <span class="hero-stat-num">{{ s.num }}</span>
+                            <span class="hero-stat-label">{{ s.label }}</span>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="hero-scroll">
+                <div class="hero-scroll-line"></div>
+                <span>Scroll</span>
             </div>
         </section>
 
-        <!-- Categories Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C9A66B">Browse By Room</p>
-                    <h2 class="section-title mb-4">Explore Furniture Categories</h2>
-                    <p class="section-subtitle mx-auto">Find stylish furniture and decor pieces designed to elevate every corner of your home.</p>
+        <!-- ══════════════ MARQUEE ══════════════ -->
+        <div class="marquee-band">
+            <div class="marquee-track">
+                <template v-for="i in 3" :key="i">
+                    <span v-for="item in marqueeItems" :key="`${i}-${item}`" class="marquee-item">
+                        <span class="marquee-dot">✦</span> {{ item }}
+                    </span>
+                </template>
+            </div>
+        </div>
+
+        <!-- ══════════════ CATEGORIES ══════════════ -->
+        <section class="section bg-white">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="label-tag mb-3">Browse by Room</div>
+                        <h2 class="section-title">Shop by Category</h2>
+                    </div>
+                    <RouterLink to="/shop" class="btn-outline hidden sm:inline-flex">View All</RouterLink>
                 </div>
 
-                <div v-if="categoriesLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    <div v-for="n in 6" :key="n" class="skeleton h-36 rounded-2xl"></div>
-                </div>
-
-                <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    <RouterLink v-for="cat in categories" :key="cat.id" :to="`/shop/${cat.slug}`"
-                        class="group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
-                        style="aspect-ratio:3/4; background:linear-gradient(135deg,#F5EFE6,#EDE5D8)">
-                        <div class="w-full h-full flex flex-col items-center justify-center p-4 text-center relative">
-                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110"
-                                style="background:linear-gradient(135deg,#8B5E3C,#C9A66B)">
-                                <span class="text-2xl text-white">{{ catIcons[cat.slug] || '🪑' }}</span>
-                            </div>
-                            <h3 class="font-semibold text-xs leading-tight" style="color:#1E1B18">{{ cat.name }}</h3>
-                            <p class="text-xs mt-1" style="color:#6D655F">{{ cat.products_count }} items</p>
+                <div class="cat-grid">
+                    <RouterLink v-for="cat in categories" :key="cat.slug"
+                        :to="`/shop/${cat.slug}`"
+                        class="cat-card"
+                        :style="`--cat-clr: ${cat.color}`">
+                        <div class="cat-img-wrap">
+                            <img :src="cat.image" :alt="cat.name" class="cat-img" loading="lazy">
+                            <div class="cat-img-overlay"></div>
                         </div>
-                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-                            style="background:linear-gradient(135deg,rgba(139,94,60,0.05),rgba(201,166,107,0.1))"></div>
+                        <div class="cat-info">
+                            <span class="cat-emoji">{{ cat.icon }}</span>
+                            <h3 class="cat-name">{{ cat.name }}</h3>
+                            <span class="cat-count">{{ cat.count }}</span>
+                        </div>
                     </RouterLink>
                 </div>
             </div>
         </section>
 
-        <!-- Best Sellers Section -->
-        <section style="background:white" class="py-20 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+        <!-- ══════════════ BEST SELLERS ══════════════ -->
+        <section class="section" style="background:#FDFAF6">
+            <div class="container">
+                <div class="section-header">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C9A66B">Customer Favorites</p>
-                        <h2 class="section-title">Best Selling Furniture</h2>
-                        <p class="section-subtitle mt-3">A curated collection of customer-favorite furniture pieces crafted for modern homes.</p>
+                        <div class="label-tag mb-3">Trending Now</div>
+                        <h2 class="section-title">Best Sellers</h2>
+                        <p class="section-subtitle mt-2">Our most-loved pieces, handpicked for you.</p>
                     </div>
-                    <RouterLink to="/shop?best_seller=1" class="btn-outline flex-shrink-0">View All</RouterLink>
+                    <RouterLink to="/shop?sort=popular" class="btn-outline hidden sm:inline-flex">See All</RouterLink>
                 </div>
 
-                <div v-if="bestSellersLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div v-for="n in 4" :key="n" class="skeleton h-80 rounded-2xl"></div>
+                <!-- Loading -->
+                <div v-if="loadingBest" class="product-grid">
+                    <div v-for="i in 4" :key="i" class="prod-skeleton"></div>
                 </div>
 
-                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <ProductCard v-for="product in bestSellers" :key="product.id" :product="product"/>
+                <!-- Products -->
+                <div v-else-if="bestSellers.length" class="product-grid">
+                    <ProductCard v-for="p in bestSellers" :key="p.id" :product="p"/>
+                </div>
+
+                <div v-else class="empty-state">No products found.</div>
+            </div>
+        </section>
+
+        <!-- ══════════════ VALUE STRIP ══════════════ -->
+        <section class="value-strip">
+            <div class="container">
+                <div class="value-grid">
+                    <div v-for="v in values" :key="v.title" class="value-item">
+                        <div class="value-icon">{{ v.icon }}</div>
+                        <div>
+                            <div class="value-title">{{ v.title }}</div>
+                            <div class="value-desc">{{ v.desc }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Craftsmanship Banner -->
-        <section class="py-20 px-4" style="background:linear-gradient(135deg,#F5EFE6,#EDE5D8)">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#8B5E3C">Our Promise</p>
-                    <h2 class="section-title mb-4">Crafted for Comfort & Durability</h2>
-                    <p class="section-subtitle mx-auto">Every furniture piece is designed with premium materials, attention to detail, and modern craftsmanship to create lasting comfort and elegance.</p>
-                </div>
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div v-for="feature in craftFeatures" :key="feature.title"
-                        class="card-premium p-6 text-center hover:-translate-y-1">
-                        <div class="text-4xl mb-4">{{ feature.icon }}</div>
-                        <h3 class="font-heading font-semibold mb-2" style="color:#1E1B18">{{ feature.title }}</h3>
-                        <p class="text-sm leading-relaxed" style="color:#6D655F">{{ feature.desc }}</p>
+        <!-- ══════════════ PROMO BANNER ══════════════ -->
+        <section class="promo-banner">
+            <div class="promo-bg">
+                <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?w=1400&q=80&auto=format&fit=crop"
+                    alt="" class="promo-bg-img" loading="lazy">
+                <div class="promo-overlay"></div>
+            </div>
+            <div class="container">
+                <div class="promo-content">
+                    <div class="label-tag mb-4" style="color:#C9A055">
+                        <span style="background:linear-gradient(to right,#C9A055,#8B5E3C)"></span>
+                        Limited Offer
                     </div>
+                    <h2 class="promo-title">Custom Furniture<br>Made for You</h2>
+                    <p class="promo-desc">Tell us your vision — we'll bring it to life.<br>Bespoke designs, delivered to your door.</p>
+                    <RouterLink to="/custom-furniture" class="btn-primary" style="padding:14px 34px">
+                        Start Your Order
+                    </RouterLink>
                 </div>
             </div>
         </section>
 
-        <!-- New Arrivals Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+        <!-- ══════════════ NEW ARRIVALS ══════════════ -->
+        <section class="section bg-white">
+            <div class="container">
+                <div class="section-header">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C9A66B">Fresh Collection</p>
+                        <div class="label-tag mb-3">Just In</div>
                         <h2 class="section-title">New Arrivals</h2>
                     </div>
-                    <RouterLink to="/shop?new_arrival=1" class="btn-outline flex-shrink-0">View All</RouterLink>
+                    <RouterLink to="/shop?sort=newest" class="btn-outline hidden sm:inline-flex">View All New</RouterLink>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <ProductCard v-for="product in newArrivals" :key="product.id" :product="product"/>
+
+                <div v-if="loadingNew" class="product-grid">
+                    <div v-for="i in 4" :key="i" class="prod-skeleton"></div>
+                </div>
+                <div v-else-if="newArrivals.length" class="product-grid">
+                    <ProductCard v-for="p in newArrivals" :key="p.id" :product="p"/>
+                </div>
+                <div v-else class="empty-state">No new arrivals yet.</div>
+            </div>
+        </section>
+
+        <!-- ══════════════ TESTIMONIALS ══════════════ -->
+        <section class="section" style="background:#1E1208">
+            <div class="container">
+                <div class="text-center mb-10">
+                    <div class="label-tag justify-center mb-3" style="color:#C9A055">
+                        <span style="background:linear-gradient(to right,#C9A055,#8B5E3C);width:24px;height:2px;display:inline-block;border-radius:2px"></span>
+                        Happy Customers
+                    </div>
+                    <h2 class="section-title" style="color:#FDFAF6">What Our Customers Say</h2>
+                </div>
+
+                <div class="testi-grid">
+                    <div v-for="t in testimonials" :key="t.name" class="testi-card">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-text">"{{ t.text }}"</p>
+                        <div class="testi-author">
+                            <div class="testi-avatar">{{ t.initials }}</div>
+                            <div>
+                                <div class="testi-name">{{ t.name }}</div>
+                                <div class="testi-location">{{ t.location }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Delivery Section -->
-        <section class="py-20 px-4 overflow-hidden" style="background:linear-gradient(135deg,#1E1B18,#2D2420)">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#C9A66B">Hassle-Free Delivery</p>
-                        <h2 class="font-heading font-bold text-white mb-6" style="font-size:clamp(28px,4vw,48px)">Reliable Furniture Delivery</h2>
-                        <p class="text-base leading-relaxed mb-8" style="color:rgba(245,239,230,0.7)">
-                            Get your furniture delivered safely and professionally with smooth order tracking and reliable customer support.
+        <!-- ══════════════ WHY US ══════════════ -->
+        <section class="section bg-white">
+            <div class="container">
+                <div class="text-center mb-10">
+                    <div class="label-tag justify-center mb-3">Our Promise</div>
+                    <h2 class="section-title">Why Choose LuxuryFurnish</h2>
+                </div>
+
+                <div class="why-grid">
+                    <div v-for="w in whyUs" :key="w.title" class="why-card">
+                        <div class="why-icon">{{ w.icon }}</div>
+                        <h3 class="why-title">{{ w.title }}</h3>
+                        <p class="why-desc">{{ w.desc }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════ SHOWROOM CTA ══════════════ -->
+        <section class="showroom">
+            <div class="container">
+                <div class="showroom-card">
+                    <div class="showroom-content">
+                        <div class="label-tag mb-3">Visit Us</div>
+                        <h2 class="section-title" style="color:#1E1208">See It in Person</h2>
+                        <p class="section-subtitle mt-2">
+                            Visit our showroom in Dhaka to experience our furniture firsthand.
+                            Our design consultants are here to help you find the perfect fit.
                         </p>
-                        <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div v-for="stat in deliveryStats" :key="stat.label" class="rounded-xl p-4"
-                                style="background:rgba(255,255,255,0.05); border:1px solid rgba(201,166,107,0.15)">
-                                <p class="font-heading font-bold text-2xl mb-1" style="color:#C9A66B">{{ stat.value }}</p>
-                                <p class="text-xs" style="color:rgba(245,239,230,0.6)">{{ stat.label }}</p>
-                            </div>
-                        </div>
-                        <RouterLink to="/shop" class="btn-primary inline-flex">Start Shopping</RouterLink>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div v-for="step in deliverySteps" :key="step.step" class="rounded-2xl p-5"
-                            :class="step.step % 2 === 0 ? 'mt-8' : ''"
-                            style="background:rgba(255,255,255,0.05); border:1px solid rgba(201,166,107,0.1)">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:rgba(201,166,107,0.2)">
-                                <span class="text-xl">{{ step.icon }}</span>
-                            </div>
-                            <h4 class="font-semibold text-white text-sm mb-1">{{ step.title }}</h4>
-                            <p class="text-xs leading-relaxed" style="color:rgba(245,239,230,0.5)">{{ step.desc }}</p>
+                        <div class="flex gap-3 flex-wrap mt-6">
+                            <RouterLink to="/contact" class="btn-primary">Get Directions</RouterLink>
+                            <RouterLink to="/about" class="btn-secondary">Learn More</RouterLink>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Custom Furniture Section -->
-        <section class="py-20 px-4" style="background:linear-gradient(135deg,#F5EFE6,#FFFDF9)">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#8B5E3C">Personalized For You</p>
-                        <h2 class="section-title mb-4">Custom Furniture Solutions</h2>
-                        <p class="section-subtitle mb-6">Need personalized furniture for your home, office, restaurant, or commercial space? We provide custom furniture solutions tailored to your exact needs.</p>
-                        <div class="space-y-3 mb-8">
-                            <div v-for="point in customPoints" :key="point" class="flex items-center gap-3">
-                                <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:#8B5E3C">
-                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                </div>
-                                <span class="text-sm" style="color:#4B2E1E">{{ point }}</span>
-                            </div>
-                        </div>
-                        <RouterLink to="/custom-furniture" class="btn-primary">Request Custom Design</RouterLink>
-                    </div>
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=450&fit=crop&q=80"
-                            class="w-full rounded-3xl shadow-2xl object-cover" style="aspect-ratio:4/3">
-                        <div class="absolute -bottom-6 -left-6 glass rounded-2xl p-4 shadow-xl">
-                            <p class="font-heading font-bold text-lg" style="color:#8B5E3C">100%</p>
-                            <p class="text-xs" style="color:#6D655F">Custom Made</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section class="py-20 px-4" style="background:white">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C9A66B">Customer Stories</p>
-                    <h2 class="section-title">Why Customers Love Our Furniture</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div v-for="review in testimonials" :key="review.name"
-                        class="card-premium p-6 hover:-translate-y-1">
-                        <div class="flex gap-0.5 mb-4">
-                            <svg v-for="n in 5" :key="n" class="w-4 h-4 fill-amber-400" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                            </svg>
-                        </div>
-                        <p class="text-sm leading-relaxed mb-5 italic" style="color:#4B2E1E">"{{ review.text }}"</p>
-                        <div class="flex items-center gap-3">
-                            <img :src="`https://ui-avatars.com/api/?name=${review.name}&background=${review.color}&color=fff&size=40`"
-                                class="w-10 h-10 rounded-full">
-                            <div>
-                                <p class="font-semibold text-sm" style="color:#1E1B18">{{ review.name }}</p>
-                                <p class="text-xs" style="color:#6D655F">{{ review.location }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Why Choose Us -->
-        <section class="py-20 px-4" style="background:linear-gradient(135deg,#F5EFE6,#EDE5D8)">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="section-title">Why Choose Our Store</h2>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                    <div v-for="reason in whyUs" :key="reason.title" class="text-center">
-                        <div class="text-4xl mb-3">{{ reason.icon }}</div>
-                        <h4 class="font-semibold text-sm mb-1" style="color:#1E1B18">{{ reason.title }}</h4>
-                        <p class="text-xs leading-relaxed" style="color:#6D655F">{{ reason.desc }}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Showroom Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#C9A66B">Come Visit Us</p>
-                    <h2 class="section-title mb-4">Visit Our Furniture Showroom</h2>
-                    <p class="section-subtitle mx-auto">Experience our premium furniture collections in person or shop online with convenient delivery options.</p>
-                </div>
-                <div class="grid lg:grid-cols-2 gap-8 items-stretch">
-                    <!-- Map placeholder -->
-                    <div class="rounded-3xl overflow-hidden shadow-xl h-80 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="text-6xl mb-3">🗺️</div>
-                            <p class="font-semibold" style="color:#8B5E3C">Our Showroom</p>
-                            <p class="text-sm" style="color:#6D655F">123 Furniture Street, Dhaka</p>
-                        </div>
-                    </div>
-                    <!-- Contact cards -->
-                    <div class="space-y-4">
-                        <div v-for="info in showroomInfo" :key="info.title"
-                            class="card-premium p-5 flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0"
-                                style="background:linear-gradient(135deg,#F5EFE6,#EDE5D8)">
-                                {{ info.icon }}
-                            </div>
-                            <div>
-                                <p class="font-semibold text-sm mb-0.5" style="color:#1E1B18">{{ info.title }}</p>
-                                <p class="text-sm" style="color:#6D655F">{{ info.value }}</p>
-                            </div>
-                        </div>
-                        <a href="tel:+8801700000000" class="btn-primary w-full justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                            </svg>
-                            Call Us: +880 1700-000000
-                        </a>
+                    <div class="showroom-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop"
+                            alt="Showroom" class="showroom-img" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -342,89 +255,477 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import ProductCard from '../components/ProductCard.vue'
 
-const categories = ref([])
 const bestSellers = ref([])
 const newArrivals = ref([])
-const categoriesLoading = ref(true)
-const bestSellersLoading = ref(true)
+const loadingBest = ref(true)
+const loadingNew  = ref(true)
 
-const catIcons = {
-    'living-room-furniture': '🛋️',
-    'bedroom-furniture': '🛏️',
-    'dining-furniture': '🍽️',
-    'office-furniture': '💼',
-    'storage-cabinets': '🗄️',
-    'home-decor': '🪴',
-}
-
-const trustBadges = ['Premium quality', 'Modern craftsmanship', 'Fast delivery', 'Elegant living']
-
-const craftFeatures = [
-    { icon: '🪵', title: 'Premium Materials', desc: 'Solid wood, genuine leather, and premium fabrics for lasting quality.' },
-    { icon: '🔨', title: 'Modern Craftsmanship', desc: 'Expert artisans crafting every piece with precision and care.' },
-    { icon: '😌', title: 'Comfort-Focused', desc: 'Ergonomic designs ensuring maximum comfort and relaxation.' },
-    { icon: '⏰', title: 'Long-lasting Durability', desc: 'Built to last with quality joinery and reinforced construction.' },
+const heroStats = [
+    { num: '500+', label: 'Products' },
+    { num: '2K+',  label: 'Happy Customers' },
+    { num: '4.9★', label: 'Avg Rating' },
+    { num: 'Free', label: 'Delivery in Dhaka' },
 ]
 
-const deliveryStats = [
-    { value: '2-5 Days', label: 'Delivery Time' },
-    { value: '100%', label: 'Safe Packaging' },
-    { value: 'Free', label: 'Above ৳5,000' },
-    { value: '24/7', label: 'Support' },
+const marqueeItems = [
+    'Living Room', 'Bedroom Sets', 'Dining Tables', 'Office Desks',
+    'Custom Orders', 'Home Decor', 'Storage Solutions', 'Outdoor Furniture',
 ]
 
-const deliverySteps = [
-    { step: 1, icon: '🛍️', title: 'Shop Online', desc: 'Browse and select your dream furniture' },
-    { step: 2, icon: '📦', title: 'Secure Packaging', desc: 'Safe and professional packaging' },
-    { step: 3, icon: '🚚', title: 'Fast Delivery', desc: 'Delivered to your doorstep' },
-    { step: 4, icon: '✨', title: 'Assembly Support', desc: 'Expert assembly assistance' },
+const categories = [
+    {
+        slug:  'living-room-furniture',
+        name:  'Living Room',
+        icon:  '🛋️',
+        count: 'Sofas & Seating',
+        color: '#8B5E3C',
+        image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80&auto=format&fit=crop',
+    },
+    {
+        slug:  'bedroom-furniture',
+        name:  'Bedroom',
+        icon:  '🛏️',
+        count: 'Beds & Wardrobes',
+        color: '#5C6E5A',
+        image: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80&auto=format&fit=crop',
+    },
+    {
+        slug:  'dining-furniture',
+        name:  'Dining',
+        icon:  '🍽️',
+        count: 'Tables & Chairs',
+        color: '#6B4E37',
+        image: 'https://images.unsplash.com/photo-1549497538-303791108f95?w=600&q=80&auto=format&fit=crop',
+    },
+    {
+        slug:  'office-furniture',
+        name:  'Office',
+        icon:  '💼',
+        count: 'Desks & Chairs',
+        color: '#3D5A6B',
+        image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=80&auto=format&fit=crop',
+    },
+    {
+        slug:  'storage-cabinets',
+        name:  'Storage',
+        icon:  '🗄️',
+        count: 'Cabinets & Shelves',
+        color: '#705040',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop',
+    },
+    {
+        slug:  'home-decor',
+        name:  'Home Decor',
+        icon:  '🪴',
+        count: 'Accessories',
+        color: '#5A6B3D',
+        image: 'https://images.unsplash.com/photo-1567538096621-38d2284b23ff?w=600&q=80&auto=format&fit=crop',
+    },
 ]
 
-const customPoints = [
-    'Custom dimensions and sizes',
-    'Choice of materials and colors',
-    'Personalized designs',
-    'Commercial and residential projects',
-    'Competitive pricing',
+const values = [
+    { icon: '🛡️', title: 'Quality Guaranteed',  desc: '3-year warranty on all furniture' },
+    { icon: '🚚', title: 'Free Delivery',        desc: 'Free delivery across Dhaka city' },
+    { icon: '🔄', title: '30-Day Returns',       desc: 'Easy hassle-free return policy' },
+    { icon: '💳', title: 'Easy Payment',         desc: 'EMI & multiple payment options' },
 ]
 
 const testimonials = [
-    { name: 'Rahim Ahmed', location: 'Dhaka, Bangladesh', color: '8B5E3C', text: 'Absolutely stunning furniture! The quality is beyond my expectations. The sofa I purchased is incredibly comfortable and looks luxurious in my living room.' },
-    { name: 'Fatima Khan', location: 'Chittagong, Bangladesh', color: '6B7A52', text: 'I ordered a custom dining set and I am amazed by the craftsmanship. Perfect fit for my dining room. Delivery was fast and professional.' },
-    { name: 'Karim Hassan', location: 'Sylhet, Bangladesh', color: 'C9A66B', text: 'The bedroom set is beautiful and high quality. The wardrobe assembly was smooth and customer service was excellent throughout.' },
+    {
+        name: 'Fatima Rahman',
+        initials: 'FR',
+        location: 'Gulshan, Dhaka',
+        text: 'Absolutely love my new sofa set! The quality is incredible and delivery was right on time. Will definitely order again.',
+    },
+    {
+        name: 'Ahmed Hassan',
+        initials: 'AH',
+        location: 'Dhanmondi, Dhaka',
+        text: 'Ordered a custom dining table and it turned out exactly as I imagined. Excellent craftsmanship and great customer service.',
+    },
+    {
+        name: 'Nusrat Islam',
+        initials: 'NI',
+        location: 'Uttara, Dhaka',
+        text: 'The bedroom set transformed my room completely. Premium quality at a fair price. Highly recommend LuxuryFurnish!',
+    },
 ]
 
 const whyUs = [
-    { icon: '🌟', title: 'Premium Quality', desc: 'Handpicked premium materials' },
-    { icon: '✏️', title: 'Elegant Designs', desc: 'Modern & timeless aesthetics' },
-    { icon: '😊', title: 'Comfort First', desc: 'Ergonomic craftsmanship' },
-    { icon: '🚚', title: 'Fast Delivery', desc: 'Quick & secure shipping' },
-    { icon: '🔧', title: 'Custom Solutions', desc: 'Tailored to your needs' },
-    { icon: '💬', title: 'Great Support', desc: '24/7 customer service' },
+    { icon: '🪵', title: 'Premium Materials',  desc: 'Only the finest solid wood, fabric, and leather used in every piece.' },
+    { icon: '✋', title: 'Handcrafted',         desc: 'Skilled artisans with decades of experience craft each piece with care.' },
+    { icon: '📐', title: 'Custom Designs',      desc: 'Work with our designers to create furniture tailored to your space.' },
+    { icon: '🌿', title: 'Eco-Friendly',        desc: 'Sustainably sourced materials and eco-conscious manufacturing practices.' },
+    { icon: '🏆', title: 'Award Winning',       desc: 'Recognized as Bangladesh\'s best furniture brand for 3 consecutive years.' },
+    { icon: '📞', title: '24/7 Support',        desc: 'Our team is always ready to help you from order to delivery and beyond.' },
 ]
 
-const showroomInfo = [
-    { icon: '📍', title: 'Showroom Address', value: '123 Furniture Street, Dhaka 1200, Bangladesh' },
-    { icon: '⏰', title: 'Working Hours', value: 'Sat-Thu: 10AM - 8PM | Fri: 2PM - 8PM' },
-    { icon: '📞', title: 'Phone', value: '+880 1700-000000 | +880 1800-000001' },
-    { icon: '✉️', title: 'Email', value: 'hello@furniturestore.com' },
-]
-
-onMounted(async () => {
+async function fetchBestSellers() {
+    loadingBest.value = true
     try {
-        const [catRes, bsRes, naRes] = await Promise.all([
-            axios.get('/categories/featured'),
-            axios.get('/products/best-sellers'),
-            axios.get('/products/new-arrivals'),
-        ])
-        categories.value = catRes.data
-        bestSellers.value = bsRes.data
-        newArrivals.value = naRes.data
-    } catch (e) {
-        console.error(e)
+        const res = await axios.get('/products/best-sellers', { params: { per_page: 8 } })
+        bestSellers.value = res.data.data || res.data.products || res.data || []
+    } catch {
+        bestSellers.value = []
     } finally {
-        categoriesLoading.value = false
-        bestSellersLoading.value = false
+        loadingBest.value = false
     }
+}
+
+async function fetchNewArrivals() {
+    loadingNew.value = true
+    try {
+        const res = await axios.get('/products/new-arrivals', { params: { per_page: 4 } })
+        newArrivals.value = res.data.data || res.data.products || res.data || []
+    } catch {
+        newArrivals.value = []
+    } finally {
+        loadingNew.value = false
+    }
+}
+
+onMounted(() => {
+    fetchBestSellers()
+    fetchNewArrivals()
 })
 </script>
+
+<style scoped>
+/* ── Hero ─────────────────────────────────────── */
+.hero {
+    position: relative;
+    min-height: 100svh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        105deg,
+        rgba(17, 10, 4, 0.90) 0%,
+        rgba(17, 10, 4, 0.78) 45%,
+        rgba(17, 10, 4, 0.30) 100%
+    );
+}
+
+.hero-content {
+    position: relative; z-index: 1;
+    max-width: 1280px; margin: 0 auto;
+    padding: 120px 24px 80px;
+    width: 100%;
+}
+
+.hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #C9A055; margin-bottom: 20px;
+}
+.hero-eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #C9A055;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,160,85,0.6); }
+    50%       { box-shadow: 0 0 0 8px rgba(201,160,85,0); }
+}
+
+.hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(44px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+}
+.hero-title-accent {
+    display: block;
+    background: linear-gradient(135deg, #E8C47A, #C9A055, #A07030);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 52px; }
+.hero-ghost-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 15px 32px; border-radius: 50px;
+    background: transparent; color: rgba(255,255,255,0.88);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    font-size: 15px; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: all 0.22s ease;
+}
+.hero-ghost-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff; border-color: rgba(255,255,255,0.6);
+}
+
+.hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-stat { display: flex; flex-direction: column; gap: 2px; }
+.hero-stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700; color: #FFFFFF;
+    line-height: 1;
+}
+.hero-stat-label { font-size: 11.5px; color: rgba(255,255,255,0.5); font-weight: 400; }
+
+.hero-scroll {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.45); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; z-index: 1;
+}
+.hero-scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    animation: scroll-line 2s ease-in-out infinite;
+}
+@keyframes scroll-line {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ── Marquee ──────────────────────────────────── */
+.marquee-band {
+    background: #1E1208;
+    overflow: hidden;
+    padding: 14px 0;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.marquee-item {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 0 20px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(201, 160, 85, 0.75);
+    white-space: nowrap;
+}
+.marquee-dot { color: #C9A055; font-size: 9px; }
+
+/* ── Sections ─────────────────────────────────── */
+.section { padding: 72px 0; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+.section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; margin-bottom: 40px; flex-wrap: wrap;
+}
+.section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 700; color: #111109;
+    line-height: 1.12; letter-spacing: -0.025em;
+}
+.section-subtitle { font-size: 15px; color: #7A6E66; line-height: 1.7; }
+
+/* ── Category Grid ────────────────────────────── */
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+@media (max-width: 768px) {
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (max-width: 480px) {
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+.cat-card {
+    position: relative; border-radius: 20px; overflow: hidden;
+    aspect-ratio: 4/3; text-decoration: none; display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cat-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(17,17,9,0.15); }
+
+.cat-img-wrap { position: absolute; inset: 0; }
+.cat-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.cat-card:hover .cat-img { transform: scale(1.08); }
+.cat-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(17,10,4,0.78) 0%, rgba(17,10,4,0.1) 60%);
+}
+
+.cat-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 18px 16px; display: flex; flex-direction: column; gap: 3px;
+}
+.cat-emoji { font-size: 22px; margin-bottom: 2px; }
+.cat-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700; color: #FFFFFF;
+    line-height: 1.2;
+}
+.cat-count { font-size: 11px; color: rgba(255,255,255,0.62); font-weight: 500; }
+
+/* ── Product Grid ────────────────────────────── */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+@media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+@media (max-width: 420px)  { .product-grid { grid-template-columns: 1fr; } }
+
+.prod-skeleton {
+    aspect-ratio: 3/4; border-radius: 20px;
+    background: linear-gradient(90deg, #EDE7E0 25%, #E4DCCE 50%, #EDE7E0 75%);
+    background-size: 1600px 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+}
+@keyframes shimmer {
+    0%   { background-position: -800px 0; }
+    100% { background-position: 800px 0; }
+}
+
+.empty-state { text-align: center; padding: 40px; color: #9B9087; font-size: 15px; }
+
+/* ── Value Strip ─────────────────────────────── */
+.value-strip {
+    background: linear-gradient(135deg, #5C2E0A, #7C4A1E, #8B5E3C);
+    padding: 40px 0;
+}
+.value-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+@media (max-width: 900px)  { .value-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .value-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
+
+.value-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 4px 0;
+}
+.value-icon { font-size: 26px; flex-shrink: 0; }
+.value-title { font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px; }
+.value-desc  { font-size: 12px; color: rgba(255,255,255,0.62); }
+
+/* ── Promo Banner ────────────────────────────── */
+.promo-banner {
+    position: relative; padding: 100px 0; overflow: hidden;
+}
+.promo-bg { position: absolute; inset: 0; }
+.promo-bg-img { width: 100%; height: 100%; object-fit: cover; }
+.promo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        105deg,
+        rgba(17, 10, 4, 0.92) 0%,
+        rgba(17, 10, 4, 0.82) 50%,
+        rgba(17, 10, 4, 0.40) 100%
+    );
+}
+.promo-content {
+    position: relative; z-index: 1;
+    max-width: 520px;
+}
+.promo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 800; color: #FFFFFF;
+    line-height: 1.1; letter-spacing: -0.03em;
+    margin-bottom: 16px;
+}
+.promo-desc { font-size: 15px; color: rgba(255,255,255,0.68); line-height: 1.7; margin-bottom: 30px; }
+
+/* ── Testimonials ────────────────────────────── */
+.testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+@media (max-width: 900px)  { .testi-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; } }
+@media (max-width: 1024px) and (min-width: 600px) { .testi-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.testi-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,160,85,0.15);
+    border-radius: 20px; padding: 24px;
+    transition: background 0.2s ease;
+}
+.testi-card:hover { background: rgba(255,255,255,0.08); }
+.testi-stars { color: #F59E0B; font-size: 16px; margin-bottom: 12px; letter-spacing: 2px; }
+.testi-text {
+    font-size: 14px; line-height: 1.75;
+    color: rgba(253,250,246,0.78);
+    margin-bottom: 20px;
+    font-style: italic;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #5C2E0A, #8B5E3C);
+    color: #fff; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.testi-name     { font-size: 14px; font-weight: 600; color: #FDFAF6; }
+.testi-location { font-size: 12px; color: rgba(253,250,246,0.45); margin-top: 1px; }
+
+/* ── Why Us ──────────────────────────────────── */
+.why-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+@media (max-width: 900px)  { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px)  { .why-grid { grid-template-columns: 1fr; } }
+
+.why-card {
+    padding: 28px 24px; border-radius: 20px;
+    border: 1.5px solid #EDE5D8;
+    background: #FDFAF6;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.why-card:hover {
+    border-color: #C9A055;
+    box-shadow: 0 8px 28px rgba(92,46,10,0.08);
+    transform: translateY(-3px);
+}
+.why-icon  { font-size: 30px; margin-bottom: 14px; }
+.why-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: #1E1208; margin-bottom: 8px; }
+.why-desc  { font-size: 13.5px; color: #7A6E66; line-height: 1.65; }
+
+/* ── Showroom ─────────────────────────────────── */
+.showroom { padding: 80px 0; background: #FDFAF6; }
+.showroom-card {
+    background: #FFFFFF;
+    border-radius: 28px;
+    border: 1.5px solid #EDE5D8;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(92,46,10,0.08);
+}
+@media (max-width: 768px) { .showroom-card { grid-template-columns: 1fr; } }
+
+.showroom-content { padding: 48px 44px; display: flex; flex-direction: column; justify-content: center; }
+.showroom-img-wrap { position: relative; min-height: 320px; overflow: hidden; }
+.showroom-img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 640px) {
+    .section  { padding: 52px 0; }
+    .hero-content { padding: 100px 18px 64px; }
+    .showroom-content { padding: 32px 24px; }
+}
+</style>

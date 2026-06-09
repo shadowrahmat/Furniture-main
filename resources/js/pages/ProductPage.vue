@@ -220,9 +220,22 @@
 
                 <!-- Related Products -->
                 <div v-if="related.length" class="mt-16">
-                    <h2 class="section-title mb-8">Related Products</h2>
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="section-title mb-0">Related Products</h2>
+                        <RouterLink :to="`/shop/${product.category?.slug}`" class="text-sm font-semibold" style="color:#8B5E3C">
+                            View all →
+                        </RouterLink>
+                    </div>
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         <ProductCard v-for="p in related" :key="p.id" :product="p"/>
+                    </div>
+                </div>
+
+                <!-- Recently Viewed -->
+                <div v-if="recentlyViewedFiltered.length" class="mt-16">
+                    <h2 class="section-title mb-8">Recently Viewed</h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        <ProductCard v-for="p in recentlyViewedFiltered" :key="p.id" :product="p"/>
                     </div>
                 </div>
             </div>
@@ -238,12 +251,14 @@ import { toast } from 'vue3-toastify'
 import { useCartStore } from '../stores/cart.js'
 import { useWishlistStore } from '../stores/wishlist.js'
 import { useAuthStore } from '../stores/auth.js'
+import { useRecentlyViewedStore } from '../stores/recentlyViewed.js'
 import ProductCard from '../components/ProductCard.vue'
 
 const route = useRoute()
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
 const authStore = useAuthStore()
+const recentlyViewedStore = useRecentlyViewedStore()
 
 const product = ref(null)
 const related = ref([])
@@ -256,6 +271,12 @@ const activeImage = ref('')
 const tabs = ['Description', 'Specifications', 'Reviews']
 
 const inWishlist = computed(() => product.value ? wishlistStore.isInWishlist(product.value.id) : false)
+
+const recentlyViewedFiltered = computed(() =>
+    recentlyViewedStore.products
+        .filter(p => p.id !== product.value?.id)
+        .slice(0, 4)
+)
 
 const allImages = computed(() => {
     if (!product.value) return []
@@ -279,6 +300,7 @@ async function loadProduct() {
         related.value = data.related
         activeImage.value = allImages.value[0]
         if (product.value.colors?.length) selectedColor.value = product.value.colors[0]
+        recentlyViewedStore.track(product.value)
     } catch (e) {
         console.error(e)
     } finally {
