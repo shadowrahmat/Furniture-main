@@ -68,6 +68,18 @@
                         <span v-if="cartCount" class="notif-dot">{{ cartCount > 9 ? '9+' : cartCount }}</span>
                     </button>
 
+                    <!-- Build Your Furniture CTA (desktop only) -->
+                    <RouterLink to="/build-your-furniture-preview"
+                        class="build-cta hidden lg:inline-flex"
+                        :class="scrolled ? 'build-cta-dark' : 'build-cta-light'"
+                        title="Build Your Furniture">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                        <span>Build Yours</span>
+                    </RouterLink>
+
                     <!-- Account / Login -->
                     <div class="hidden lg:block">
                         <RouterLink v-if="isAuth" to="/account"
@@ -124,6 +136,11 @@
                                 @click="mobileOpen = false"
                                 class="mobile-nav-link">
                                 {{ link.label }}
+                            </RouterLink>
+                            <RouterLink to="/build-your-furniture-preview"
+                                @click="mobileOpen = false"
+                                class="mobile-nav-link">
+                                Build Your Furniture
                             </RouterLink>
                         </nav>
 
@@ -274,6 +291,24 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     box-shadow: 0 2px 10px rgba(92,46,10,0.3);
 }
 .login-dark:hover { box-shadow: 0 4px 16px rgba(92,46,10,0.45); filter: brightness(1.08); }
+
+.build-cta {
+    align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 50px; margin-right: 2px;
+    font-size: 12.5px; font-weight: 600;
+    cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: all 0.22s ease;
+}
+.build-cta-light {
+    background: rgba(255,255,255,0.15); color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+.build-cta-light:hover { background: rgba(255,255,255,0.25); }
+.build-cta-dark {
+    background: linear-gradient(135deg, #5C2E0A, #8B5E3C); color: #fff;
+    box-shadow: 0 2px 10px rgba(92,46,10,0.3);
+}
+.build-cta-dark:hover { box-shadow: 0 4px 16px rgba(92,46,10,0.45); filter: brightness(1.08); }
 
 .mobile-panel {
     position: absolute; top: 0; right: 0; bottom: 0;

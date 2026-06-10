@@ -10,6 +10,7 @@ class WoodTypeController extends Controller
     public function index()
     {
         $woodTypes = WoodType::where('is_active', true)
+            ->where('availability', '!=', 'out_of_stock')
             ->orderBy('display_order')
             ->get();
 

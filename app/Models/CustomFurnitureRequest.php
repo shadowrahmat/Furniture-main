@@ -8,10 +8,10 @@ class CustomFurnitureRequest extends Model
 {
     protected $fillable = [
         'request_number', 'user_id', 'furniture_type_id', 'wood_type_id',
-        'name', 'email', 'phone',
-        'length', 'width', 'height', 'dimension_unit',
-        'finish', 'color_preference',
-        'budget_min', 'budget_max', 'delivery_preference',
+        'name', 'email', 'phone', 'customer_address',
+        'length', 'width', 'height', 'dimension_unit', 'quantity',
+        'finish', 'color_preference', 'design_style', 'upholstery_fabric',
+        'budget_min', 'budget_max', 'delivery_preference', 'delivery_date', 'delivery_address',
         'additional_notes', 'status', 'admin_notes', 'is_read',
     ];
 
@@ -21,8 +21,10 @@ class CustomFurnitureRequest extends Model
             'length' => 'decimal:2',
             'width' => 'decimal:2',
             'height' => 'decimal:2',
+            'quantity' => 'integer',
             'budget_min' => 'decimal:2',
             'budget_max' => 'decimal:2',
+            'delivery_date' => 'date',
             'is_read' => 'boolean',
         ];
     }
@@ -47,9 +49,23 @@ class CustomFurnitureRequest extends Model
         return $this->hasMany(CustomRequestFile::class);
     }
 
+    /**
+     * Generate the next sequential request number for the current year.
+     * Must be called within a DB transaction to safely lock the table
+     * against concurrent inserts.
+     */
     public static function generateRequestNumber(): string
     {
-        return 'CR-' . strtoupper(uniqid());
+        $prefix = 'CFR-' . now()->year . '-';
+
+        $last = static::where('request_number', 'like', $prefix . '%')
+            ->lockForUpdate()
+            ->orderByDesc('id')
+            ->first();
+
+        $next = $last ? ((int) substr($last->request_number, strlen($prefix))) + 1 : 1;
+
+        return $prefix . str_pad((string) $next, 6, '0', STR_PAD_LEFT);
     }
 
     public function getStatusLabelAttribute(): string

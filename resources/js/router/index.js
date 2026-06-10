@@ -19,6 +19,7 @@ const routes = [
             { path: 'about', name: 'about', component: () => import('../pages/AboutPage.vue') },
             { path: 'contact', name: 'contact', component: () => import('../pages/ContactPage.vue') },
             { path: 'custom-furniture', name: 'custom-furniture', component: () => import('../pages/CustomFurniturePage.vue') },
+            { path: 'build-your-furniture-preview', name: 'build-your-furniture-preview', component: () => import('../pages/BuildFurniturePage.vue') },
             { path: 'faq', name: 'faq', component: () => import('../pages/FaqPage.vue') },
             { path: 'privacy-policy', name: 'privacy', component: () => import('../pages/PrivacyPage.vue') },
             { path: 'terms', name: 'terms', component: () => import('../pages/TermsPage.vue') },

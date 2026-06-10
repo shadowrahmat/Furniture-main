@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\WoodTypeController;
 use App\Http\Controllers\Api\FurnitureTypeController;
+use App\Http\Controllers\Api\CustomFurnitureRequestController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
@@ -64,6 +65,10 @@ Route::post('/custom-inquiry', [CustomInquiryController::class, 'store']);
 // Build Your Furniture catalogs (public)
 Route::get('/wood-types', [WoodTypeController::class, 'index']);
 Route::get('/furniture-types', [FurnitureTypeController::class, 'index']);
+
+// Build Your Furniture - request submission (public, supports guest + authenticated)
+Route::post('/custom-furniture-requests', [CustomFurnitureRequestController::class, 'store'])
+    ->middleware('throttle:10,1');
 
 // Order tracking (public)
 Route::get('/orders/track/{orderNumber}', [OrderController::class, 'track']);
