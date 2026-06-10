@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\WishlistController;
+use App\Http\Controllers\Api\WoodTypeController;
+use App\Http\Controllers\Api\FurnitureTypeController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
@@ -22,6 +24,8 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WoodTypeController as AdminWoodTypeController;
+use App\Http\Controllers\Admin\FurnitureTypeController as AdminFurnitureTypeController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -56,6 +60,10 @@ Route::post('/coupons/apply', [CouponController::class, 'apply']);
 // Contact
 Route::post('/contact', [ContactController::class, 'store']);
 Route::post('/custom-inquiry', [CustomInquiryController::class, 'store']);
+
+// Build Your Furniture catalogs (public)
+Route::get('/wood-types', [WoodTypeController::class, 'index']);
+Route::get('/furniture-types', [FurnitureTypeController::class, 'index']);
 
 // Order tracking (public)
 Route::get('/orders/track/{orderNumber}', [OrderController::class, 'track']);
@@ -146,11 +154,23 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\AdminMiddleware::class])
     Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve']);
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy']);
 
-    // Inquiries
+    // Inquiries (legacy)
     Route::get('/inquiries', [InquiryController::class, 'index']);
     Route::get('/inquiries/{inquiry}', [InquiryController::class, 'show']);
     Route::patch('/inquiries/{inquiry}/status', [InquiryController::class, 'updateStatus']);
     Route::delete('/inquiries/{inquiry}', [InquiryController::class, 'destroy']);
+
+    // Wood Types (Build Your Furniture)
+    Route::get('/wood-types', [AdminWoodTypeController::class, 'index']);
+    Route::post('/wood-types', [AdminWoodTypeController::class, 'store']);
+    Route::post('/wood-types/{woodType}', [AdminWoodTypeController::class, 'update']);
+    Route::delete('/wood-types/{woodType}', [AdminWoodTypeController::class, 'destroy']);
+
+    // Furniture Types (Build Your Furniture)
+    Route::get('/furniture-types', [AdminFurnitureTypeController::class, 'index']);
+    Route::post('/furniture-types', [AdminFurnitureTypeController::class, 'store']);
+    Route::post('/furniture-types/{furnitureType}', [AdminFurnitureTypeController::class, 'update']);
+    Route::delete('/furniture-types/{furnitureType}', [AdminFurnitureTypeController::class, 'destroy']);
 
     // Contact messages
     Route::get('/messages', [AdminContactController::class, 'index']);
