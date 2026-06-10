@@ -1,8 +1,11 @@
 <template>
     <div class="adm-shell">
 
+        <!-- Mobile overlay -->
+        <div v-if="mobileOpen" class="adm-overlay" @click="mobileOpen = false"></div>
+
         <!-- ════ SIDEBAR ════ -->
-        <aside class="adm-sidebar" :class="{ collapsed: !open }">
+        <aside class="adm-sidebar" :class="{ collapsed: !open, 'mobile-open': mobileOpen }">
 
             <!-- Logo -->
             <div class="adm-logo">
@@ -70,7 +73,7 @@
             <!-- Top bar -->
             <header class="adm-topbar">
                 <div class="adm-topbar-left">
-                    <button @click="open = !open" class="adm-toggle-btn" title="Toggle Sidebar">
+                    <button @click="toggleSidebar" class="adm-toggle-btn" title="Toggle Sidebar">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -107,16 +110,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
+import '../../css/admin.css'
 
 const router    = useRouter()
 const route     = useRoute()
 const authStore = useAuthStore()
 
 const open = ref(true)
+const mobileOpen = ref(false)
 const user = computed(() => authStore.currentUser)
+
+function toggleSidebar() {
+    if (window.innerWidth <= 900) {
+        mobileOpen.value = !mobileOpen.value
+    } else {
+        open.value = !open.value
+    }
+}
+
+watch(() => route.path, () => { mobileOpen.value = false })
 
 const currentPageName = computed(() => {
     const name = route.name?.replace('admin-', '') || 'Dashboard'
@@ -223,6 +238,30 @@ async function logout() {
     background: #141414;
 }
 .adm-sidebar.collapsed { width: 60px; }
+
+/* ── Mobile overlay & drawer ──────────────────────────── */
+.adm-overlay {
+    display: none;
+}
+@media (max-width: 900px) {
+    .adm-sidebar, .adm-sidebar.collapsed {
+        width: 240px;
+        transform: translateX(-100%);
+        box-shadow: 0 0 40px rgba(0,0,0,0.25);
+    }
+    .adm-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    .adm-overlay {
+        display: block;
+        position: fixed; inset: 0;
+        background: rgba(15,23,42,0.45);
+        z-index: 39;
+        animation: fade-in 0.18s ease;
+    }
+    .ml-sidebar, .ml-sidebar-sm { margin-left: 0; }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── Logo ─────────────────────────────────────────────── */
 .adm-logo {

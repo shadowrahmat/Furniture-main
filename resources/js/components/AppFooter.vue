@@ -3,7 +3,7 @@
 
         <!-- Newsletter -->
         <div style="background:#1E1A15; border-top:1px solid rgba(255,255,255,0.04)">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+            <div class="max-w-7xl mx-auto px-5 py-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-6 sm:p-8 rounded-2xl"
                     style="background:linear-gradient(135deg,rgba(201,166,107,0.08),rgba(139,94,60,0.05)); border:1px solid rgba(201,166,107,0.15)">
                     <div class="text-center md:text-left">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Main Grid -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+        <div class="max-w-7xl mx-auto px-5 py-14">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
 
                 <!-- Brand -->
@@ -98,7 +98,7 @@
 
         <!-- Bottom bar -->
         <div style="border-top:1px solid rgba(255,255,255,0.05)">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="max-w-7xl mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p class="text-xs" style="color:rgba(240,232,222,0.3)">
                     © {{ year }} LuxuryFurnish. All rights reserved. Made with ❤️ in Bangladesh.
                 </p>

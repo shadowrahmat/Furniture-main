@@ -1,108 +1,169 @@
 <template>
     <div>
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="font-heading font-bold text-2xl" style="color:#1E1B18">Categories</h1>
-            <button @click="openModal()" class="btn-primary text-sm">+ Add Category</button>
+
+        <!-- Header -->
+        <div class="adm-page-header">
+            <div>
+                <h1 class="adm-page-title">Categories</h1>
+                <p class="adm-page-sub">{{ categories.length }} total categories</p>
+            </div>
+            <button @click="openModal()" class="adm-btn-primary">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add Category
+            </button>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden" style="border-color:#F0E8DE">
-            <div v-if="loading" class="p-8 text-center" style="color:#6D655F">Loading...</div>
-            <div v-else-if="categories.length === 0" class="p-12 text-center">
-                <div class="text-5xl mb-3">📂</div>
-                <p style="color:#6D655F">No categories yet</p>
+        <!-- Table card -->
+        <div class="adm-card">
+
+            <div v-if="loading" class="adm-loading">
+                <div v-for="n in 5" :key="n" class="adm-row-skeleton"></div>
             </div>
-            <table v-else class="w-full">
-                <thead class="text-xs font-semibold uppercase tracking-wider" style="background:#FAF8F5;color:#6D655F">
-                    <tr>
-                        <th class="px-5 py-3 text-left">Category</th>
-                        <th class="px-5 py-3 text-left hidden md:table-cell">Slug</th>
-                        <th class="px-5 py-3 text-left hidden sm:table-cell">Products</th>
-                        <th class="px-5 py-3 text-left hidden lg:table-cell">Status</th>
-                        <th class="px-5 py-3 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y" style="divide-color:#F0E8DE">
-                    <tr v-for="cat in categories" :key="cat.id" class="hover:bg-amber-50/30 transition-colors">
-                        <td class="px-5 py-3">
-                            <div class="flex items-center gap-3">
-                                <img v-if="cat.image_url" :src="cat.image_url" class="w-10 h-10 rounded-lg object-cover flex-shrink-0">
-                                <div v-else class="w-10 h-10 rounded-lg flex items-center justify-center text-xl flex-shrink-0" style="background:#F5EFE6">{{ cat.icon || '📂' }}</div>
+
+            <div v-else-if="categories.length === 0" class="adm-empty">
+                <div class="adm-empty-icon">
+                    <svg width="32" height="32" fill="none" stroke="#CBD5E1" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                    </svg>
+                </div>
+                <p class="adm-empty-title">No categories yet</p>
+                <p class="adm-empty-sub">Create your first category to organize products.</p>
+                <button @click="openModal()" class="adm-btn-primary mt-4">Add First Category</button>
+            </div>
+
+            <div v-else class="adm-table-wrap">
+                <table class="adm-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th class="hidden md:table-cell">Slug</th>
+                            <th class="hidden sm:table-cell">Products</th>
+                            <th class="hidden lg:table-cell">Status</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cat in categories" :key="cat.id">
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <img v-if="cat.image_url" :src="cat.image_url" class="w-11 h-11 rounded-xl object-cover flex-shrink-0 border" style="border-color:#E8EEF4">
+                                    <div v-else class="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0 border" style="background:#F8FAFC;border-color:#E8EEF4">{{ cat.icon || '📂' }}</div>
+                                    <div>
+                                        <p class="font-semibold text-sm" style="color:#0F172A">{{ cat.name }}</p>
+                                        <p v-if="cat.description" class="text-xs mt-0.5 truncate max-w-xs" style="color:#94A3B8">{{ cat.description }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="hidden md:table-cell">
+                                <span class="text-xs font-mono" style="color:#94A3B8">{{ cat.slug }}</span>
+                            </td>
+                            <td class="hidden sm:table-cell">
+                                <span class="font-bold text-sm" style="color:#8B5E3C;font-family:'Poppins',sans-serif">{{ cat.products_count || 0 }}</span>
+                            </td>
+                            <td class="hidden lg:table-cell">
+                                <span class="adm-status-pill" :class="cat.is_active ? 'pill-active' : 'pill-inactive'">
+                                    <span class="pill-dot"></span>
+                                    {{ cat.is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td class="text-right">
+                                <div class="inline-flex items-center gap-1.5">
+                                    <button @click="openModal(cat)" class="adm-act-btn">
+                                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                        Edit
+                                    </button>
+                                    <button @click="confirmDelete(cat)" class="adm-act-btn adm-act-danger">
+                                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add / Edit Modal -->
+        <Teleport to="body">
+            <Transition name="modal-fade">
+                <div v-if="showModal" class="adm-modal-overlay" @click.self="showModal = false">
+                    <div class="adm-modal-form">
+                        <h3 class="adm-modal-title mb-5">{{ editTarget ? 'Edit Category' : 'Add Category' }}</h3>
+                        <form @submit.prevent="saveCategory" class="space-y-4">
+                            <div>
+                                <label class="adm-form-label">Name *</label>
+                                <input v-model="catForm.name" type="text" class="input-field" required>
+                            </div>
+                            <div>
+                                <label class="adm-form-label">Slug</label>
+                                <input v-model="catForm.slug" type="text" class="input-field" placeholder="auto-generated from name">
+                            </div>
+                            <div>
+                                <label class="adm-form-label">Description</label>
+                                <textarea v-model="catForm.description" class="input-field" rows="2"></textarea>
+                            </div>
+                            <div class="adm-form-grid">
                                 <div>
-                                    <p class="font-medium text-sm" style="color:#1E1B18">{{ cat.name }}</p>
-                                    <p v-if="cat.description" class="text-xs truncate max-w-xs" style="color:#6D655F">{{ cat.description }}</p>
+                                    <label class="adm-form-label">Icon (emoji)</label>
+                                    <input v-model="catForm.icon" type="text" class="input-field" placeholder="🪑">
+                                </div>
+                                <div>
+                                    <label class="adm-form-label">Image</label>
+                                    <div class="adm-image-upload" @click="$refs.catImg.click()" style="padding:6px; height:46px; display:flex; align-items:center; justify-content:center; overflow:hidden">
+                                        <img v-if="catImagePreview" :src="catImagePreview" class="h-full rounded-lg object-cover" style="aspect-ratio:1">
+                                        <p v-else class="text-xs" style="color:#94A3B8">Click to upload</p>
+                                        <input ref="catImg" type="file" accept="image/*" class="hidden" @change="handleCatImage">
+                                    </div>
                                 </div>
                             </div>
-                        </td>
-                        <td class="px-5 py-3 hidden md:table-cell text-sm font-mono" style="color:#6D655F">{{ cat.slug }}</td>
-                        <td class="px-5 py-3 hidden sm:table-cell text-sm font-semibold" style="color:#1E1B18">{{ cat.products_count || 0 }}</td>
-                        <td class="px-5 py-3 hidden lg:table-cell">
-                            <span class="px-2 py-1 rounded-full text-xs font-semibold"
-                                :style="cat.is_active ? 'background:#D1FAE5;color:#065F46' : 'background:#FEE2E2;color:#991B1B'">
-                                {{ cat.is_active ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button @click="openModal(cat)" class="text-xs px-3 py-1.5 rounded-lg font-medium" style="background:#F5EFE6;color:#8B5E3C">Edit</button>
-                                <button @click="confirmDelete(cat)" class="text-xs px-3 py-1.5 rounded-lg font-medium" style="background:#FEE2E2;color:#991B1B">Delete</button>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" v-model="catForm.is_active" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
+                                <span class="text-sm" style="color:#334155">Active</span>
+                            </label>
+                            <div class="adm-modal-actions pt-2">
+                                <button type="button" @click="showModal = false" class="adm-btn-ghost">Cancel</button>
+                                <button type="submit" :disabled="catSaving" class="adm-btn-primary" style="flex:1; justify-content:center">
+                                    {{ catSaving ? 'Saving…' : 'Save' }}
+                                </button>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Category Modal -->
-        <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
-                <h3 class="font-heading font-bold text-xl mb-5" style="color:#1E1B18">{{ editTarget ? 'Edit Category' : 'Add Category' }}</h3>
-                <form @submit.prevent="saveCategory" class="space-y-4">
-                    <div>
-                        <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Name *</label>
-                        <input v-model="catForm.name" type="text" class="input-field" required>
+                        </form>
                     </div>
-                    <div>
-                        <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Slug</label>
-                        <input v-model="catForm.slug" type="text" class="input-field" placeholder="auto-generated from name">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Description</label>
-                        <textarea v-model="catForm.description" class="input-field" rows="2"></textarea>
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Icon (emoji)</label>
-                        <input v-model="catForm.icon" type="text" class="input-field w-24" placeholder="🪑">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Image</label>
-                        <input type="file" accept="image/*" @change="handleCatImage" class="text-sm">
-                        <img v-if="catImagePreview" :src="catImagePreview" class="w-20 h-20 object-cover rounded-lg mt-2">
-                    </div>
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" v-model="catForm.is_active" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
-                        <span class="text-sm" style="color:#1E1B18">Active</span>
-                    </label>
-                    <div class="flex gap-3 pt-2">
-                        <button type="button" @click="showModal = false" class="flex-1 btn-outline text-sm py-2">Cancel</button>
-                        <button type="submit" :disabled="catSaving" class="flex-1 btn-primary text-sm py-2">{{ catSaving ? 'Saving...' : 'Save' }}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </Transition>
+        </Teleport>
 
         <!-- Delete Modal -->
-        <div v-if="deleteTarget" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-                <h3 class="font-heading font-bold text-xl mb-2" style="color:#1E1B18">Delete Category?</h3>
-                <p class="mb-6 text-sm" style="color:#6D655F">Delete <strong>{{ deleteTarget.name }}</strong>? Products in this category will be uncategorized.</p>
-                <div class="flex gap-3">
-                    <button @click="deleteTarget = null" class="flex-1 btn-outline text-sm py-2">Cancel</button>
-                    <button @click="deleteCategory" :disabled="deleting" class="flex-1 text-sm py-2 rounded-lg font-semibold text-white" style="background:#DC2626">
-                        {{ deleting ? 'Deleting...' : 'Delete' }}
-                    </button>
+        <Teleport to="body">
+            <Transition name="modal-fade">
+                <div v-if="deleteTarget" class="adm-modal-overlay" @click.self="deleteTarget = null">
+                    <div class="adm-modal">
+                        <div class="adm-modal-icon-wrap">
+                            <svg width="24" height="24" fill="none" stroke="#DC2626" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </div>
+                        <h3 class="adm-modal-title">Delete Category?</h3>
+                        <p class="adm-modal-desc">
+                            Delete <strong>{{ deleteTarget.name }}</strong>? Products in this category will be uncategorized.
+                        </p>
+                        <div class="adm-modal-actions">
+                            <button @click="deleteTarget = null" class="adm-btn-ghost">Cancel</button>
+                            <button @click="deleteCategory" :disabled="deleting" class="adm-btn-danger">
+                                {{ deleting ? 'Deleting…' : 'Delete' }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 

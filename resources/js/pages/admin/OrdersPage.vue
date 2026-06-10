@@ -105,7 +105,7 @@
                                         @change="updateStatus(order, $event.target.value)"
                                         class="status-select"
                                         :class="`sel-${order.status}`">
-                                        <option v-for="s in statuses" :key="s" :value="s">{{ s }}</option>
+                                        <option v-for="s in statuses" :key="s" :value="s">{{ s.charAt(0).toUpperCase() + s.slice(1) }}</option>
                                     </select>
                                 </td>
                                 <td class="text-right">
@@ -199,94 +199,3 @@ async function updateStatus(order, status) {
 
 onMounted(fetchOrders)
 </script>
-
-<style scoped>
-.adm-page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; gap:16px; flex-wrap:wrap; }
-.adm-page-title  { font-size:22px; font-weight:700; color:#0F172A; letter-spacing:-0.02em; }
-.adm-page-sub    { font-size:13px; color:#94A3B8; margin-top:2px; }
-
-/* Status tabs */
-.status-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
-.status-tab {
-    padding:7px 14px; border-radius:99px;
-    font-size:12.5px; font-weight:600; cursor:pointer;
-    border:1.5px solid #E2E8F0; background:#FFFFFF; color:#64748B;
-    transition:all 0.18s ease; white-space:nowrap;
-}
-.status-tab:hover { border-color:#C9A055; color:#8B5E3C; background:#FFFBEB; }
-.status-tab-active { background:linear-gradient(135deg,#5C2E0A,#8B5E3C) !important; color:#fff !important; border-color:transparent !important; }
-
-/* Filter bar */
-.filter-bar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; }
-.filter-search-wrap { flex:1; min-width:220px; position:relative; }
-.filter-search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94A3B8; pointer-events:none; }
-.filter-search {
-    width:100%; padding:10px 14px 10px 36px;
-    border:1.5px solid #E2E8F0; border-radius:10px;
-    font-size:13.5px; background:#FFFFFF; color:#0F172A;
-    outline:none; font-family:'Inter',sans-serif;
-    transition:border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.filter-search::placeholder { color:#CBD5E1; }
-.filter-search:focus { border-color:#C9A055; box-shadow:0 0 0 3px rgba(201,160,85,0.12); }
-.filter-date-wrap { display:flex; align-items:center; gap:8px; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:10px; padding:0 12px; }
-.filter-date-label { font-size:11px; font-weight:600; color:#94A3B8; text-transform:uppercase; letter-spacing:0.08em; white-space:nowrap; }
-.filter-date { border:none; outline:none; padding:10px 0; font-size:13px; color:#334155; font-family:'Inter',sans-serif; background:transparent; }
-
-/* Card */
-.adm-card { background:#FFFFFF; border:1px solid #E8EEF4; border-radius:16px; overflow:hidden; }
-
-/* Loading */
-.adm-loading { padding:16px; display:flex; flex-direction:column; gap:10px; }
-.adm-row-skeleton { height:52px; border-radius:10px; background:linear-gradient(90deg,#F1F5F9 25%,#E2E8F0 50%,#F1F5F9 75%); background-size:800px 100%; animation:sk 1.6s ease-in-out infinite; }
-@keyframes sk { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
-
-/* Empty */
-.adm-empty { padding:56px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; }
-.adm-empty-icon { width:64px; height:64px; border-radius:16px; background:#F8FAFC; border:1.5px solid #E2E8F0; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-.adm-empty-title { font-size:15px; font-weight:700; color:#1E293B; }
-.adm-empty-sub   { font-size:13px; color:#94A3B8; margin-top:4px; }
-
-/* Table */
-.adm-table-wrap { overflow-x:auto; }
-.adm-table { width:100%; border-collapse:collapse; }
-.adm-table thead tr { background:#F8FAFC; }
-.adm-table th { padding:10px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#94A3B8; text-align:left; border-bottom:1px solid #F1F5F9; white-space:nowrap; }
-.adm-table td { padding:13px 16px; font-size:13.5px; color:#475569; border-bottom:1px solid #F8FAFC; vertical-align:middle; }
-.adm-table tbody tr:last-child td { border-bottom:none; }
-.adm-table tbody tr:hover td { background:#FAFBFF; }
-
-/* Status select */
-.status-select {
-    font-size:11.5px; font-weight:700; padding:4px 10px;
-    border-radius:99px; border:none; cursor:pointer;
-    outline:none; appearance:none; -webkit-appearance:none;
-    font-family:'Inter',sans-serif;
-}
-.sel-pending    { background:#FEF3C7; color:#92400E; }
-.sel-processing { background:#DBEAFE; color:#1E40AF; }
-.sel-shipped    { background:#EDE9FE; color:#7C3AED; }
-.sel-completed  { background:#D1FAE5; color:#065F46; }
-.sel-cancelled  { background:#FEE2E2; color:#991B1B; }
-
-/* Action button */
-.adm-act-btn {
-    display:inline-flex; align-items:center; gap:4px;
-    padding:5px 10px; border-radius:7px;
-    font-size:12px; font-weight:600; cursor:pointer;
-    border:none; transition:all 0.18s ease;
-    background:#F1F5F9; color:#475569; text-decoration:none;
-}
-.adm-act-btn:hover { background:#E2E8F0; color:#1E293B; }
-
-/* Pagination */
-.adm-pagination { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-top:1px solid #F1F5F9; flex-wrap:wrap; gap:10px; }
-.pag-info  { font-size:12.5px; color:#94A3B8; }
-.pag-btns  { display:flex; gap:4px; }
-.pag-btn { min-width:32px; height:32px; border-radius:8px; background:#F8FAFC; border:1px solid #E2E8F0; color:#475569; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.18s ease; padding:0 6px; }
-.pag-btn:hover:not(:disabled) { background:#EFF6FF; border-color:#93C5FD; color:#1D4ED8; }
-.pag-btn:disabled { opacity:0.4; cursor:default; }
-.pag-active { background:linear-gradient(135deg,#5C2E0A,#8B5E3C) !important; color:#fff !important; border-color:transparent !important; }
-
-.text-right { text-align:right; }
-</style>

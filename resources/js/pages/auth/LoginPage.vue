@@ -13,7 +13,7 @@
 
             <!-- Logo -->
             <RouterLink to="/" class="relative inline-flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center gradient-walnut shadow-lg">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center grad-walnut shadow-lg">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                     </svg>
@@ -53,7 +53,7 @@
                 <!-- Mobile logo -->
                 <div class="lg:hidden text-center mb-8">
                     <RouterLink to="/" class="inline-flex items-center gap-2.5 justify-center mb-4">
-                        <div class="w-9 h-9 rounded-xl flex items-center justify-center gradient-walnut">
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center grad-walnut">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                             </svg>

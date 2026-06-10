@@ -104,20 +104,30 @@
                     <h2 class="adm-card-title">Top Products</h2>
                     <RouterLink to="/admin/products" class="adm-card-link">View all →</RouterLink>
                 </div>
-                <div class="space-y-1 px-1">
-                    <div v-if="productsLoading" class="py-8 text-center" style="color:#94A3B8">Loading…</div>
-                    <div v-else-if="!topProducts.length" class="py-8 text-center" style="color:#94A3B8">No data</div>
+                <div class="top-prod-list">
+                    <div v-if="productsLoading" class="top-prod-empty">
+                        <p>Loading…</p>
+                    </div>
+                    <div v-else-if="!topProducts.length" class="top-prod-empty">
+                        <svg width="28" height="28" fill="none" stroke="#CBD5E1" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                        </svg>
+                        <p>No sales data yet</p>
+                    </div>
                     <div v-else v-for="(p, i) in topProducts" :key="p.id" class="top-prod-row">
-                        <span class="top-prod-rank">#{{ i + 1 }}</span>
+                        <div class="top-prod-rank" :class="`rank-${i + 1}`">{{ i + 1 }}</div>
                         <img :src="p.featured_image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=40&h=40&fit=crop'"
-                            class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium truncate" style="color:#1E293B">{{ p.name }}</p>
-                            <p class="text-xs" style="color:#94A3B8">{{ p.sales_count || 0 }} sold</p>
+                            class="top-prod-img">
+                        <div class="top-prod-info">
+                            <p class="top-prod-name">{{ p.name }}</p>
+                            <div class="top-prod-meta">
+                                <span class="top-prod-sold">{{ p.sales_count || 0 }} sold</span>
+                                <span class="top-prod-price">৳{{ Number(p.price).toLocaleString() }}</span>
+                            </div>
+                            <div class="top-prod-bar-track">
+                                <div class="top-prod-bar-fill" :style="`width:${salesPercent(p)}%`"></div>
+                            </div>
                         </div>
-                        <span class="text-sm font-bold flex-shrink-0" style="color:#8B5E3C;font-family:'Poppins',sans-serif">
-                            ৳{{ Number(p.price).toLocaleString() }}
-                        </span>
                     </div>
                 </div>
             </div>
@@ -137,17 +147,22 @@
                 </div>
                 <RouterLink to="/admin/products?status=low_stock" class="adm-card-link">Manage →</RouterLink>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div class="low-stock-grid">
                 <div v-for="p in lowStock" :key="p.id" class="low-stock-item">
                     <img :src="p.featured_image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=40&h=40&fit=crop'"
-                        class="w-10 h-10 rounded-lg object-cover flex-shrink-0">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium truncate" style="color:#1E293B">{{ p.name }}</p>
-                        <p class="text-xs font-semibold" style="color:#DC2626">{{ p.stock }} units left</p>
+                        class="low-stock-img">
+                    <div class="low-stock-info">
+                        <p class="low-stock-name">{{ p.name }}</p>
+                        <span class="low-stock-pill" :class="stockSeverity(p.stock)">
+                            <span class="low-stock-dot"></span>
+                            {{ p.stock === 0 ? 'Out of stock' : `${p.stock} left` }}
+                        </span>
                     </div>
-                    <RouterLink :to="`/admin/products/${p.id}/edit`"
-                        class="text-xs px-2.5 py-1 rounded-lg font-semibold flex-shrink-0"
-                        style="background:#FEE2E2; color:#DC2626">Edit</RouterLink>
+                    <RouterLink :to="`/admin/products/${p.id}/edit`" class="low-stock-edit" title="Edit product">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                    </RouterLink>
                 </div>
             </div>
         </div>
@@ -169,7 +184,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
 const loading         = ref(true)
@@ -190,6 +205,18 @@ const custSvg = `<svg width="16" height="16" fill="none" stroke="currentColor" v
 const prodSvg = `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>`
 const lowSvg  = `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>`
 const cupSvg  = `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>`
+
+const maxTopProductSales = computed(() => Math.max(...topProducts.value.map(p => p.sales_count || 0), 1))
+
+function salesPercent(p) {
+    return Math.max(((p.sales_count || 0) / maxTopProductSales.value) * 100, 4)
+}
+
+function stockSeverity(stock) {
+    if (stock === 0) return 'severity-out'
+    if (stock <= 2) return 'severity-critical'
+    return 'severity-warn'
+}
 
 const quickActions = [
     { to: '/admin/products/create', label: 'Add Product',    desc: 'List a new item',      bg: 'rgba(139,94,60,0.1)',  svg: prodSvg },
@@ -230,196 +257,3 @@ onMounted(async () => {
     }
 })
 </script>
-
-<style scoped>
-/* ── Page header ──────────────────────────────── */
-.adm-page-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
-}
-.adm-page-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 22px; font-weight: 700; color: #0F172A;
-    letter-spacing: -0.02em;
-}
-.adm-page-sub { font-size: 13px; color: #94A3B8; margin-top: 2px; }
-.adm-btn-primary {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: linear-gradient(135deg, #5C2E0A, #8B5E3C);
-    color: #fff; border: none; border-radius: 10px;
-    padding: 9px 18px; font-size: 13px; font-weight: 600;
-    cursor: pointer; text-decoration: none; white-space: nowrap;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(92,46,10,0.3);
-}
-.adm-btn-primary:hover { box-shadow: 0 4px 18px rgba(92,46,10,0.45); filter: brightness(1.08); }
-
-/* ── Stats grid ──────────────────────────────── */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 24px;
-}
-@media (max-width: 1100px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px)  { .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-
-.stat-skeleton {
-    height: 110px; border-radius: 14px;
-    background: linear-gradient(90deg, #E2E8F0 25%, #CBD5E1 50%, #E2E8F0 75%);
-    background-size: 800px 100%;
-    animation: sk 1.6s ease-in-out infinite;
-}
-@keyframes sk { 0% { background-position: -400px 0 } 100% { background-position: 400px 0 } }
-
-.stat-card {
-    background: #FFFFFF;
-    border: 1px solid #E8EEF4;
-    border-radius: 14px;
-    padding: 18px 18px 16px;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.stat-card:hover { box-shadow: 0 6px 20px rgba(15,23,42,0.07); transform: translateY(-2px); }
-
-.stat-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-.stat-label { font-size: 11.5px; font-weight: 600; color: #64748B; text-transform: uppercase; letter-spacing: 0.08em; }
-.stat-icon-wrap {
-    width: 34px; height: 34px; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; color: #64748B;
-}
-.stat-icon-svg :deep(svg) { stroke: currentColor; }
-
-.stat-value {
-    font-family: 'Poppins', sans-serif;
-    font-size: 24px; font-weight: 700;
-    color: #0F172A; letter-spacing: -0.03em;
-    line-height: 1;
-}
-.stat-change {
-    display: inline-flex; align-items: center; gap: 3px;
-    font-size: 11.5px; font-weight: 600; margin-top: 8px;
-}
-.stat-change.positive { color: #059669; }
-.stat-change.negative { color: #DC2626; }
-.stat-neutral { font-size: 11px; color: #CBD5E1; margin-top: 8px; }
-
-/* ── Mid grid ─────────────────────────────────── */
-.mid-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 16px;
-}
-@media (max-width: 900px) { .mid-grid { grid-template-columns: 1fr; } }
-
-/* ── Card ─────────────────────────────────────── */
-.adm-card {
-    background: #FFFFFF;
-    border: 1px solid #E8EEF4;
-    border-radius: 16px;
-    overflow: hidden;
-}
-.adm-card-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid #F1F5F9;
-}
-.adm-card-title { font-size: 14px; font-weight: 700; color: #0F172A; }
-.adm-card-link { font-size: 12px; font-weight: 600; color: #8B5E3C; text-decoration: none; }
-.adm-card-link:hover { color: #5C2E0A; }
-
-/* ── Table ─────────────────────────────────────── */
-.adm-table-wrap { overflow-x: auto; }
-.adm-table { width: 100%; border-collapse: collapse; }
-.adm-table thead tr { background: #F8FAFC; }
-.adm-table th {
-    padding: 10px 16px;
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    color: #94A3B8; text-align: left;
-    border-bottom: 1px solid #F1F5F9;
-    white-space: nowrap;
-}
-.adm-table td {
-    padding: 12px 16px;
-    font-size: 13.5px; color: #475569;
-    border-bottom: 1px solid #F8FAFC;
-    vertical-align: middle;
-}
-.adm-table tbody tr:last-child td { border-bottom: none; }
-.adm-table tbody tr:hover td { background: #F8FAFC; }
-
-.adm-link { color: #8B5E3C; text-decoration: none; }
-.adm-link:hover { color: #5C2E0A; text-decoration: underline; }
-
-/* ── Badges ─────────────────────────────────────── */
-.adm-badge {
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 10.5px; font-weight: 700;
-    padding: 3px 9px; border-radius: 99px;
-    white-space: nowrap; text-transform: capitalize;
-}
-.badge-pending    { background: #FEF3C7; color: #92400E; }
-.badge-processing { background: #DBEAFE; color: #1E40AF; }
-.badge-shipped    { background: #EDE9FE; color: #7C3AED; }
-.badge-completed  { background: #D1FAE5; color: #065F46; }
-.badge-cancelled  { background: #FEE2E2; color: #991B1B; }
-.badge-danger     { background: #FEE2E2; color: #DC2626; }
-
-/* ── Top products ─────────────────────────────── */
-.top-prod-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; border-radius: 10px;
-    transition: background 0.15s ease;
-}
-.top-prod-row:hover { background: #F8FAFC; }
-.top-prod-rank {
-    width: 20px; font-size: 11px; font-weight: 700;
-    color: #C9A055; flex-shrink: 0; text-align: center;
-}
-
-/* ── Low stock ────────────────────────────────── */
-.low-stock-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px;
-    background: #FFF5F5;
-    border: 1px solid #FED7D7;
-    border-radius: 10px;
-}
-
-/* ── Quick actions ────────────────────────────── */
-.quick-actions-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-@media (max-width: 900px)  { .quick-actions-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px)  { .quick-actions-grid { grid-template-columns: 1fr; } }
-
-.quick-action-card {
-    background: #FFFFFF;
-    border: 1px solid #E8EEF4;
-    border-radius: 14px;
-    padding: 16px;
-    display: flex; align-items: center; gap: 12px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-.quick-action-card:hover {
-    border-color: #C9A055;
-    box-shadow: 0 4px 16px rgba(92,46,10,0.08);
-    transform: translateY(-2px);
-}
-.quick-action-icon {
-    width: 36px; height: 36px;
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; color: currentColor;
-}
-.quick-action-icon :deep(svg) { stroke: currentColor; }
-.quick-action-label { font-size: 13px; font-weight: 700; color: #1E293B; }
-.quick-action-desc  { font-size: 11.5px; color: #94A3B8; margin-top: 1px; }
-
-.col-span-2 { grid-column: span 2; }
-@media (max-width: 900px) { .col-span-2 { grid-column: span 1; } }
-</style>

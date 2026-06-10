@@ -1,31 +1,36 @@
 <template>
     <div>
-        <div class="flex items-center gap-4 mb-6">
-            <button @click="$router.back()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-5 h-5" style="color:#6D655F" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
-            <h1 class="font-heading font-bold text-2xl" style="color:#1E1B18">{{ isEdit ? 'Edit Product' : 'Add Product' }}</h1>
+        <RouterLink to="/admin/products" class="adm-back-link">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Products
+        </RouterLink>
+
+        <div class="adm-page-header">
+            <div>
+                <h1 class="adm-page-title">{{ isEdit ? 'Edit Product' : 'Add Product' }}</h1>
+                <p class="adm-page-sub">{{ isEdit ? 'Update product details and inventory' : 'Create a new product listing' }}</p>
+            </div>
         </div>
 
-        <form @submit.prevent="save" class="grid lg:grid-cols-3 gap-6">
+        <form @submit.prevent="save" class="grid lg:grid-cols-3 gap-5">
             <!-- Main Info -->
             <div class="lg:col-span-2 space-y-5">
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Basic Information</h2>
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Basic Information</h2>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Product Name *</label>
+                            <label class="adm-form-label">Product Name *</label>
                             <input v-model="form.name" type="text" class="input-field" required placeholder="e.g. Luxe Velvet Sofa">
                         </div>
-                        <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="adm-form-grid">
                             <div>
-                                <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">SKU</label>
+                                <label class="adm-form-label">SKU</label>
                                 <input v-model="form.sku" type="text" class="input-field" placeholder="e.g. SOF-001">
                             </div>
                             <div>
-                                <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Category *</label>
+                                <label class="adm-form-label">Category *</label>
                                 <select v-model="form.category_id" class="input-field" required>
                                     <option value="">Select category</option>
                                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -33,71 +38,71 @@
                             </div>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Short Description</label>
+                            <label class="adm-form-label">Short Description</label>
                             <textarea v-model="form.short_description" class="input-field" rows="2" placeholder="Brief product summary..."></textarea>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Full Description</label>
+                            <label class="adm-form-label">Full Description</label>
                             <textarea v-model="form.description" class="input-field" rows="5" placeholder="Detailed product description..."></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Pricing & Inventory</h2>
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Pricing & Inventory</h2>
                     <div class="grid sm:grid-cols-3 gap-4">
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Price (৳) *</label>
+                            <label class="adm-form-label">Price (৳) *</label>
                             <input v-model="form.price" type="number" step="0.01" min="0" class="input-field" required>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Compare Price (৳)</label>
+                            <label class="adm-form-label">Compare Price (৳)</label>
                             <input v-model="form.compare_price" type="number" step="0.01" min="0" class="input-field">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Stock Quantity *</label>
+                            <label class="adm-form-label">Stock Quantity *</label>
                             <input v-model="form.stock" type="number" min="0" class="input-field" required>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Product Details</h2>
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Product Details</h2>
                     <div class="space-y-4">
-                        <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="adm-form-grid">
                             <div>
-                                <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Material</label>
+                                <label class="adm-form-label">Material</label>
                                 <input v-model="form.material" type="text" class="input-field" placeholder="e.g. Solid Teak Wood">
                             </div>
                             <div>
-                                <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Dimensions</label>
+                                <label class="adm-form-label">Dimensions</label>
                                 <input v-model="form.dimensions" type="text" class="input-field" placeholder='e.g. 220×90×85 cm'>
                             </div>
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Available Colors (comma-separated)</label>
+                            <label class="adm-form-label">Available Colors (comma-separated)</label>
                             <input v-model="colorsInput" type="text" class="input-field" placeholder="Walnut Brown, Ivory White, Charcoal">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Tags (comma-separated)</label>
+                            <label class="adm-form-label">Tags (comma-separated)</label>
                             <input v-model="tagsInput" type="text" class="input-field" placeholder="sofa, living room, luxury">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Weight (kg)</label>
+                            <label class="adm-form-label">Weight (kg)</label>
                             <input v-model="form.weight" type="number" step="0.1" min="0" class="input-field w-40">
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">SEO</h2>
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">SEO</h2>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Meta Title</label>
+                            <label class="adm-form-label">Meta Title</label>
                             <input v-model="form.meta_title" type="text" class="input-field">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold uppercase tracking-wider mb-1.5 block" style="color:#6D655F">Meta Description</label>
+                            <label class="adm-form-label">Meta Description</label>
                             <textarea v-model="form.meta_description" class="input-field" rows="2"></textarea>
                         </div>
                     </div>
@@ -106,60 +111,60 @@
 
             <!-- Right Sidebar -->
             <div class="space-y-5">
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Status</h2>
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Status</h2>
                     <div class="space-y-3">
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" v-model="form.is_active" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
-                            <span class="text-sm" style="color:#1E1B18">Active (visible in store)</span>
+                            <span class="text-sm" style="color:#334155">Active (visible in store)</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" v-model="form.is_featured" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
-                            <span class="text-sm" style="color:#1E1B18">Featured product</span>
+                            <span class="text-sm" style="color:#334155">Featured product</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" v-model="form.is_new" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
-                            <span class="text-sm" style="color:#1E1B18">New arrival</span>
+                            <span class="text-sm" style="color:#334155">New arrival</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" v-model="form.is_best_seller" class="w-4 h-4 rounded" style="accent-color:#8B5E3C">
-                            <span class="text-sm" style="color:#1E1B18">Best seller</span>
+                            <span class="text-sm" style="color:#334155">Best seller</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Featured Image</h2>
-                    <div class="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition-colors"
-                        style="border-color:#C9A66B" @click="$refs.imageInput.click()">
-                        <img v-if="imagePreview" :src="imagePreview" class="w-full h-40 object-cover rounded-lg mb-2">
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Featured Image</h2>
+                    <div class="adm-image-upload" @click="$refs.imageInput.click()">
+                        <img v-if="imagePreview" :src="imagePreview" class="w-full h-40 object-cover rounded-lg">
                         <div v-else class="py-6">
-                            <div class="text-3xl mb-2">🖼️</div>
-                            <p class="text-sm" style="color:#6D655F">Click to upload image</p>
+                            <svg class="mx-auto mb-2" width="28" height="28" fill="none" stroke="#C9A66B" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="text-sm" style="color:#94A3B8">Click to upload image</p>
                         </div>
                         <input ref="imageInput" type="file" accept="image/*" class="hidden" @change="handleImage">
                     </div>
-                    <p class="text-xs mt-2" style="color:#6D655F">Recommended: 800×800px, max 2MB</p>
+                    <p class="text-xs mt-2" style="color:#94A3B8">Recommended: 800×800px, max 2MB</p>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border" style="border-color:#F0E8DE">
-                    <h2 class="font-semibold mb-4" style="color:#1E1B18">Gallery Images</h2>
-                    <div class="border-2 border-dashed rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition-colors"
-                        style="border-color:#C9A66B" @click="$refs.galleryInput.click()">
+                <div class="adm-form-card">
+                    <h2 class="adm-form-section-title">Gallery Images</h2>
+                    <div class="adm-image-upload" @click="$refs.galleryInput.click()">
                         <div class="grid grid-cols-3 gap-2 mb-2" v-if="galleryPreviews.length">
-                            <img v-for="(p, i) in galleryPreviews" :key="i" :src="p" class="aspect-square object-cover rounded">
+                            <img v-for="(p, i) in galleryPreviews" :key="i" :src="p" class="aspect-square object-cover rounded-lg">
                         </div>
                         <div v-else class="py-4">
-                            <p class="text-sm" style="color:#6D655F">Click to add gallery images</p>
+                            <p class="text-sm" style="color:#94A3B8">Click to add gallery images</p>
                         </div>
                         <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden" @change="handleGallery">
                     </div>
                 </div>
 
                 <div class="flex gap-3">
-                    <button type="button" @click="$router.back()" class="flex-1 btn-outline text-sm py-2.5">Cancel</button>
-                    <button type="submit" :disabled="saving" class="flex-1 btn-primary text-sm py-2.5">
-                        {{ saving ? 'Saving...' : (isEdit ? 'Update Product' : 'Create Product') }}
+                    <button type="button" @click="$router.back()" class="adm-btn-ghost">Cancel</button>
+                    <button type="submit" :disabled="saving" class="adm-btn-primary" style="flex:1; justify-content:center; padding:11px 18px">
+                        {{ saving ? 'Saving…' : (isEdit ? 'Update Product' : 'Create Product') }}
                     </button>
                 </div>
             </div>

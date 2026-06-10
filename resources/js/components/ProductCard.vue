@@ -124,7 +124,7 @@ function fmt(v) {
 }
 
 function goToProduct() {
-    router.push(`/products/${props.product.slug}`)
+    router.push(`/product/${props.product.slug}`)
 }
 
 function openQuickView() {

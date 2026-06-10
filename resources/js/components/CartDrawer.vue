@@ -18,7 +18,7 @@
                 <!-- Header -->
                 <div class="flex items-center justify-between px-5 py-4 border-b" style="border-color:#EDE5D8">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl flex items-center justify-center gradient-walnut">
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center grad-walnut">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                             </svg>
