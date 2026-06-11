@@ -35,14 +35,18 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'featured_image' => 'nullable|image|max:5120',
-            'images.*' => 'nullable|image|max:5120',
+            'gallery.*' => 'nullable|image|max:5120',
         ]);
 
-        $data = $request->except(['featured_image', 'images', 'colors', 'tags', 'specifications']);
+        $data = $request->except(['featured_image', 'gallery', 'colors', 'tags', 'specifications', 'is_new']);
         $data['slug'] = Str::slug($request->name) . '-' . Str::random(5);
         $data['sku'] = $request->sku ?: 'FS-' . strtoupper(Str::random(8));
         $data['colors'] = $request->colors ? explode(',', $request->colors) : null;
         $data['tags'] = $request->tags ? explode(',', $request->tags) : null;
+        $data['is_active'] = $request->boolean('is_active');
+        $data['is_featured'] = $request->boolean('is_featured');
+        $data['is_best_seller'] = $request->boolean('is_best_seller');
+        $data['is_new_arrival'] = $request->boolean('is_new');
 
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $request->file('featured_image')->store('products', 'public');
@@ -50,8 +54,8 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $i => $image) {
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $i => $image) {
                 ProductImage::create([
                     'product_id' => $product->id,
                     'image' => $image->store('products', 'public'),
@@ -76,17 +80,34 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'gallery.*' => 'nullable|image|max:5120',
         ]);
 
-        $data = $request->except(['featured_image', 'images', '_method']);
+        $data = $request->except(['featured_image', 'gallery', '_method', 'is_new']);
         $data['colors'] = $request->colors ? explode(',', $request->colors) : null;
         $data['tags'] = $request->tags ? explode(',', $request->tags) : null;
+        $data['is_active'] = $request->boolean('is_active');
+        $data['is_featured'] = $request->boolean('is_featured');
+        $data['is_best_seller'] = $request->boolean('is_best_seller');
+        $data['is_new_arrival'] = $request->boolean('is_new');
 
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $request->file('featured_image')->store('products', 'public');
         }
 
         $product->update($data);
+
+        if ($request->hasFile('gallery')) {
+            $existingCount = $product->images()->count();
+            foreach ($request->file('gallery') as $i => $image) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $image->store('products', 'public'),
+                    'sort_order' => $existingCount + $i,
+                    'is_primary' => $existingCount === 0 && $i === 0,
+                ]);
+            }
+        }
 
         return response()->json(['message' => 'Product updated', 'product' => $product->load('images')]);
     }
